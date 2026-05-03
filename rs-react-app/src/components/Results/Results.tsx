@@ -1,10 +1,14 @@
 import React from 'react';
 
-class Results extends React.Component {
+type Props = {
+    search: string;
+}
+
+class Results extends React.Component<Props> {
     render() {
         return (
             <div className='results'>
-                <p>Results will be here</p>
+                <p>Search value: {this.props.search}</p>
             </div>
         );
     }

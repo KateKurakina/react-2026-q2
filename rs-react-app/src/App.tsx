@@ -1,13 +1,28 @@
 import React from "react";
 import Header from './components/Header/Header';
-import Results from "./components/Results/Resuts";
+import Results from "./components/Results/Results";
 
-class App extends React.Component {
+type State = {
+  search: string;
+}
+
+class App extends React.Component<object, State> {
+  state: State = {
+    search: '',
+  };
+
+  handleSearch = (value: string) => {
+    this.setState({ search: value });
+  }
+
   render() {
     return (
       <div className="app">
-        <Header />
-        <Results />
+        <Header
+          onSearch={this.handleSearch}
+          currentSearch={this.state.search}
+        />
+        <Results search={this.state.search} />
       </div>
     );
   }

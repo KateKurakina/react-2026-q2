@@ -1,11 +1,19 @@
 import React from 'react';
 import Search from '../Search/Search'
 
-class Header extends React.Component {
+type Props = {
+    onSearch: (value: string) => void;
+    currentSearch: string;
+}
+
+class Header extends React.Component<Props> {
     render() {
         return (
             <header className="header">
-                <Search />
+                <Search
+                    onSearch={this.props.onSearch}
+                    currentSearch={this.props.currentSearch}
+                />
             </header>
         );
     }
