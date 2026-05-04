@@ -1,29 +1,42 @@
 import React from 'react';
+import CardList from '../CardList/CardList';
+import type { PokemonItem } from "../../types";
 
 type Props = {
     search: string;
 }
 
 type State = {
-    data: any[];
+    data: PokemonItem[];
     loading: boolean;
     error: string | null;
+    offset: number;
 }
+
+type ApiPokemon = {
+  name: string;
+  url: string;
+}
+
 
 class Results extends React.Component<Props, State> {
     state: State = {
         data: [],
         loading: false,
         error: null,
+        offset: 0,
     };
 
     componentDidMount() {
         this.fetchData(this.props.search);
     }
 
-    componentDidUpdate(prevProps: Props) {
-        if (prevProps.search !== this.props.search) {
-        this.fetchData(this.props.search);
+    componentDidUpdate(prevProps: Props, prevState: State) {
+        if (
+            prevProps.search !== this.props.search ||
+            prevState.offset !== this.state.offset
+        ) {
+            this.fetchData(this.props.search);
         }
     }
 
@@ -31,67 +44,79 @@ class Results extends React.Component<Props, State> {
         this.setState({ loading: true, error: null });
 
         try {
-        let url = '';
+            const { offset } = this.state;
 
-        if (search) {
-            url = `https://pokeapi.co/api/v2/pokemon/${search.toLowerCase()}`;
-        } else {
-            url = `https://pokeapi.co/api/v2/pokemon?limit=10`;
-        }
+            const url = search
+            ? `https://pokeapi.co/api/v2/pokemon/${search.toLowerCase()}`
+            : `https://pokeapi.co/api/v2/pokemon?limit=10&offset=${offset}`;
 
-        const res = await fetch(url);
+            await new Promise((r) => setTimeout(r, 300));
 
-        if (!res.ok) {
-            throw new Error('Failed to fetch data');
-        }
+            const res = await fetch(url);
 
-        const data = await res.json();
+            if (!res.ok) {
+                throw new Error('Failed to fetch data');
+            }
 
-        let result = [];
+            const data = await res.json();
 
-        if (search) {
-            result = [
-            {
-                name: data.name,
-                description: `Height: ${data.height}, Weight: ${data.weight}`,
-            },
-            ];
-        } else {
-            result = data.results.map((item: any) => ({
-            name: item.name,
-            description: item.url,
+            const result: PokemonItem[] = search
+            ? [
+                {
+                    name: data.name,
+                    description: `Height: ${data.height}, Weight: ${data.weight}`,
+                },
+            ]
+            : data.results.map((item: ApiPokemon) => ({
+                name: item.name,
+                description: item.url,
             }));
-        }
 
-        this.setState({
-            data: result,
-            loading: false,
-        });
-        } catch (err) {
-        this.setState({
-            error: 'Something went wrong',
-            loading: false,
-        });
+            this.setState({
+                data: result,
+                loading: false,
+            });
+        } catch (e: unknown) {
+            this.setState({
+                error: search
+                ? 'Pokemon not found'
+                : 'Failed to load Pokemon list',
+                loading: false,
+            });
         }
+    };
+
+    handleNext = () => {
+        this.setState(
+            (prev) => ({ offset: prev.offset + 10 }),
+            () => this.fetchData(this.props.search)
+        );
+    };
+
+    handlePrev = () => {
+    this.setState(
+        (prev) => ({ offset: Math.max(prev.offset - 10, 0) }),
+        () => this.fetchData(this.props.search)
+    );
     };
 
     render() {
         const { data, loading, error } = this.state;
 
-        if (loading) return <p>Loading...</p>;
+       ;
 
-        if (error) return <p>{error}</p>;
+    return (
+      <div className="results">
+        {loading && <div className="loader">Loading...</div>}
 
-        return (
-            <div className='results'>
-                {data.map((item, index) => (
-                    <div key={index} className="card">
-                        <h3>{item.name}</h3>
-                        <p>{item.description}</p>
-                    </div>
-                ))}
-            </div>
-        );
+        {error ? <p>{error}</p> : <CardList items={data} />}
+
+        <div className="pagination">
+          <button onClick={this.handlePrev}>Prev</button>
+          <button onClick={this.handleNext}>Next</button>
+        </div>
+      </div>
+    );
     }
 }
 

@@ -31,7 +31,7 @@ class Search extends React.Component<Props, State> {
     handleSearch = () => {
         const trimmed = this.state.value.trim();
 
-        if (trimmed === this.props.currentSearch) return;
+        if (trimmed === this.props.currentSearch.trim()) return;
 
         localStorage.setItem('search', trimmed);
         this.props.onSearch(trimmed);
