@@ -7,7 +7,7 @@ describe('Search', () => {
     localStorage.clear();
     vi.clearAllMocks();
   });
-  
+
   it('renders input and button', () => {
     render(
       <Search
@@ -135,5 +135,24 @@ describe('Search', () => {
     expect(onSearch).toHaveBeenCalledWith('bulbasaur');
   });
 
+  it('does NOT call onSearch again if value is same as currentSearch', async () => {
+    const user = userEvent.setup();
+    const onSearch = vi.fn();
+
+    render(
+        <Search onSearch={onSearch} currentSearch="pikachu" />
+    );
+
+    const initialCalls = onSearch.mock.calls.length;
+
+    const input = screen.getByPlaceholderText('Search Pokemon...');
+    const button = screen.getByRole('button');
+
+    await user.clear(input);
+    await user.type(input, 'pikachu');
+    await user.click(button);
+
+    expect(onSearch.mock.calls.length).toBe(initialCalls);
+  });
 
 });
