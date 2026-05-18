@@ -1,21 +1,14 @@
-import React from "react";
 import type { PokemonItem } from "../../types";
 
 type Props = {
     item: PokemonItem;
 };
 
-class Card extends React.Component<Props> {
-    render() {
-        const { name, description } = this.props.item;
-        
+export default function Card({ item }: Props) {    
         return (
             <div className="card">
-                <h3>{name}</h3>
-                <p>{description}</p>
+                <h3>{item.name}</h3>
+                <p>{item.description}</p>
             </div>
         );
-    }
 }
-
-export default Card;
