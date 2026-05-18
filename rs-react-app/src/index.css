@@ -53,3 +53,18 @@ button {
 .button__error {
   align-self: center;
 }
+
+.split-view {
+  display: flex;
+  gap: 20px;
+}
+
+.left-panel {
+  flex: 2;
+}
+
+.right-panel {
+  flex: 1;
+  border-left: 1px solid #ddd;
+  padding-left: 20px;
+}
