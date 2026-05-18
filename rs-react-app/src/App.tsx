@@ -1,49 +1,39 @@
-import React from "react";
-import Header from './components/Header/Header';
-import Results from "./components/Results/Results";
+import {
+  Routes,
+  Route,
+} from "react-router-dom";
+
+import Home from "./pages/Home";
+import About from "./pages/About";
+import NotFound from "./pages/NotFound";
+
 import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary";
-import ErrorTrigger from "./components/ErrorTrigger/ErrorTrigger";
-
-type State = {
-  search: string;
-  hasCrash: boolean;
-}
-
-class App extends React.Component<object, State> {
-  state: State = {
-    search: '',
-    hasCrash: false,
-  };
-
-  handleSearch = (value: string) => {
-    this.setState({ search: value });
-  }
-
-    throwError = () => {
-      this.setState({ hasCrash: true});
-  }
 
 
-  render() {
+function App() {
+
     return (
       <ErrorBoundary>
-        <div className="app">
-          <Header
-            onSearch={this.handleSearch}
-            currentSearch={this.state.search}
+        <Routes>
+
+          <Route
+          path="/"
+          element={<Home />}
           />
 
-          <Results search={this.state.search} />
+          <Route
+          path="/about"
+          element={<About />}
+          />
 
-          <button className="button__error" onClick={this.throwError}>
-            Test Error
-          </button>
+          <Route
+          path="*"
+          element={<NotFound />}
+          />
 
-          <ErrorTrigger shouldCrash={this.state.hasCrash} />
-        </div>
+        </Routes>
       </ErrorBoundary>
     );
   }
-}
 
 export default App;
