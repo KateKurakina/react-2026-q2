@@ -1,16 +1,11 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
+
 import CardList from '../CardList/CardList';
 import type { PokemonItem } from "../../types";
 
 type Props = {
     search: string;
-}
-
-type State = {
-    data: PokemonItem[];
-    loading: boolean;
-    error: string | null;
-    offset: number;
 }
 
 type ApiPokemon = {
@@ -19,91 +14,83 @@ type ApiPokemon = {
 }
 
 
-class Results extends React.Component<Props, State> {
-    state: State = {
-        data: [],
-        loading: false,
-        error: null,
-        offset: 0,
-    };
+export default function Results({ search }: Props) {
+    const [data, setData] =
+    useState<PokemonItem[]>([]);
 
-    componentDidMount() {
-        this.fetchData(this.props.search);
-    }
+    const [loading, setLoading] =
+    useState(false);
 
-    componentDidUpdate(prevProps: Props, prevState: State) {
-        if (
-            prevProps.search !== this.props.search ||
-            prevState.offset !== this.state.offset
-        ) {
-            this.fetchData(this.props.search);
+    const [error, setError] =
+    useState<string | null>(null);
+
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    const page = Number(searchParams.get("page")) || 1;
+
+    const offset = (page - 1) * 10;
+
+    useEffect(() => {
+        if (!searchParams.get("page")) {
+            setSearchParams({
+                page: "1",
+            });
         }
-    }
+    }, []);
 
-    fetchData = async (search: string) => {
-        this.setState({ loading: true, error: null });
+    useEffect(() => {
+        fetchData();
+    }, [search, page]);
+
+    const fetchData = async () => {
+        setLoading(true);
+        setError(null);
 
         try {
-            const { offset } = this.state;
-
             const url = search
-            ? `https://pokeapi.co/api/v2/pokemon/${search.toLowerCase()}`
-            : `https://pokeapi.co/api/v2/pokemon?limit=10&offset=${offset}`;
+                ? `https://pokeapi.co/api/v2/pokemon/${search.toLowerCase()}`
+                : `https://pokeapi.co/api/v2/pokemon?limit=10&offset=${offset}`;
 
-            await new Promise((r) => setTimeout(r, 300));
+            await new Promise((r) =>
+                setTimeout(r, 300)
+            );
 
             const res = await fetch(url);
 
             if (!res.ok) {
-                throw new Error('Failed to fetch data');
+                throw Error();
             }
 
-            const data = await res.json();
+            const apiData = await res.json();
 
-            const result: PokemonItem[] = search
-            ? [
-                {
-                    name: data.name,
-                    description: `Height: ${data.height}, Weight: ${data.weight}`,
-                },
-            ]
-            : data.results.map((item: ApiPokemon) => ({
-                name: item.name,
-                description: item.url,
-            }));
+            const result: PokemonItem[] =
+                search
+                ? [{
+                    name: apiData.name,
+                    description:
+                        `Height: ${apiData.height},
+                        Weight: ${apiData.weight}`,
+                    }]
+                : apiData.results.map(
+                    (item: ApiPokemon) => ({
+                        name: item.name,
+                        description: item.url,
+                    })
+                    );
 
-            this.setState({
-                data: result,
-                loading: false,
-            });
-        } catch (e: unknown) {
-            this.setState({
-                error: search
-                ? 'Pokemon not found'
-                : 'Failed to load Pokemon list',
-                loading: false,
-            });
+            setData(result);
+        }
+        catch {
+            setError(
+                search
+                ? "Pokemon not found"
+                : "Failed to load Pokemon list"
+            );
+        }
+        finally {
+        setLoading(false);
         }
     };
-
-    handleNext = () => {
-        this.setState(
-            (prev) => ({ offset: prev.offset + 10 }),
-            () => this.fetchData(this.props.search)
-        );
-    };
-
-    handlePrev = () => {
-    this.setState(
-        (prev) => ({ offset: Math.max(prev.offset - 10, 0) }),
-        () => this.fetchData(this.props.search)
-    );
-    };
-
-    render() {
-        const { data, loading, error } = this.state;
-
-       ;
 
     return (
       <div className="results">
@@ -111,13 +98,24 @@ class Results extends React.Component<Props, State> {
 
         {error ? <p>{error}</p> : <CardList items={data} />}
 
-        <div className="pagination">
-          <button onClick={this.handlePrev}>Prev</button>
-          <button onClick={this.handleNext}>Next</button>
-        </div>
+        {!!data.length && (    
+            <div className="pagination">
+                <button 
+                disabled={page === 1}
+                onClick={() => setSearchParams({page: String(page - 1)})}
+                >
+                Prev
+                </button>
+
+                <p>Page {page}</p>
+
+                <button 
+                onClick={() => setSearchParams({page: String(page + 1)})}
+                >
+                Next
+                </button>
+            </div>
+        )}
       </div>
     );
-    }
 }
-
-export default Results;
