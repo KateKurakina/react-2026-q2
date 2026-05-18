@@ -4,7 +4,7 @@ import { defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react';
 
 export default defineConfig({
-  base: '/react-2026-q2',
+  base: '/',
   plugins: [react()],
 
   test: {

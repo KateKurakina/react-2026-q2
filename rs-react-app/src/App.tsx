@@ -6,10 +6,9 @@ import {
 import Home from "./pages/Home";
 import About from "./pages/About";
 import NotFound from "./pages/NotFound";
-
-import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary";
 import PokemonDetails from "./pages/PokemonDetails";
 
+import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary";
 
 function App() {
 
@@ -18,7 +17,7 @@ function App() {
         <Routes>
 
           <Route path="/" element={<Home />}>
-            <Route index element={null} />
+            <Route path=":detailsId" element={<PokemonDetails />} />
           </Route>
           
           <Route

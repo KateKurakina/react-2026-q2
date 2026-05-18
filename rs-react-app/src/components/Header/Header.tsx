@@ -1,4 +1,5 @@
 import Search from '../Search/Search'
+import { Link } from 'react-router-dom';
 
 type Props = {
     onSearch: (value: string) => void;
@@ -15,6 +16,7 @@ export default function Header({
                 onSearch={onSearch}
                 currentSearch={currentSearch}
             />
+            <Link to="/about">About</Link>
         </header>
     );
 }

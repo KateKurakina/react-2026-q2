@@ -1,22 +1,23 @@
 import { useState } from "react";
-import { Outlet } from "react-router-dom";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, Outlet, useParams } from "react-router-dom";
 
 import Header from "../components/Header/Header";
 import Results from "../components/Results/Results";
-import ErrorTrigger from "../components/ErrorTrigger/ErrorTrigger";
-import PokemonDetails from "./PokemonDetails";
 
 
 export default function Home() {
   const [search, setSearch] = useState('');
   const [hasCrash, setHasCrash] = useState(false);
-  const [searchParams, setSearchParams] = useSearchParams();
+  const { detailsId } = useParams();
+  const navigate = useNavigate();
 
-  const selected = searchParams.get("details");
 
   const handleSearch = (value: string) => {
     setSearch(value);
+  };
+
+  const handleCloseDetails = () => {
+    navigate("/");
   };
 
   return (
@@ -33,26 +34,17 @@ export default function Home() {
             <Results search={search} />
         </div>
         <div className="right-panel">
-            {selected ? (
+            {detailsId ? (
                 <>
-                    <button 
-                        onClick={() =>
-                            setSearchParams((prev) => {
-                                const page = prev.get("page") || "1";
-                                return { page };
-                            })
-                        }
-                    >
+                    <button onClick={handleCloseDetails}>
                         Close
                     </button>
-                
-                <PokemonDetails name={selected} />
+
+                    <Outlet />
                 </>
-                
             ) : (
                 <p>Select pokemon</p>
             )}
-            
         </div>
 
       </div>
@@ -64,7 +56,7 @@ export default function Home() {
         Test Error
       </button>
 
-      <ErrorTrigger shouldCrash={hasCrash} />
+      {hasCrash && (() => { throw new Error("Test error"); })()}
 
     </div>
   );

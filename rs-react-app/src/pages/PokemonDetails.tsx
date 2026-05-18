@@ -1,8 +1,6 @@
+import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-type Props = {
-    name: string;
-}
 
 type Pokemon = {
   name: string;
@@ -10,7 +8,9 @@ type Pokemon = {
   weight: number;
 };
 
-export default function PokemonDetails({ name }:Props) {
+export default function PokemonDetails() {
+const { detailsId } = useParams();
+
   const [pokemon, setPokemon] =
     useState<Pokemon | null>(null);
 
@@ -21,7 +21,7 @@ export default function PokemonDetails({ name }:Props) {
     async function fetchPokemon() {
       try {
         const res = await fetch(
-          `https://pokeapi.co/api/v2/pokemon/${name}`
+          `https://pokeapi.co/api/v2/pokemon/${detailsId}`
         );
 
         const data = await res.json();
