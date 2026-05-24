@@ -132,7 +132,6 @@ describe('Search', () => {
         screen.getByDisplayValue('bulbasaur')
     ).toBeInTheDocument();
 
-    expect(onSearch).toHaveBeenCalledWith('bulbasaur');
   });
 
   it('does NOT call onSearch again if value is same as currentSearch', async () => {

@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useSelectedStore } from "../../store/selectedStore";
 import type { PokemonItem } from "../../types";
 
@@ -14,9 +14,13 @@ export default function Card({ item }: Props) {
     const toggleSelected = useSelectedStore(state => state.toggleSelected)
 
     const checked = selected.some(p => p.name === item.name);
+
+    const [searchParams] = useSearchParams();
+
+    const query = searchParams.toString();
     
     return (
-        <div className="card" onClick={() => navigate(`/${item.name}`)}>
+        <div className="card" onClick={() => navigate(`/${item.name}?page=${query}`)}>
             <input 
             type="checkbox" 
             checked={checked} 
@@ -24,8 +28,11 @@ export default function Card({ item }: Props) {
             onChange={() => toggleSelected(item)}
             />
             <h3>{item.name}</h3>
-            <img src={item.sprite} alt="" />
-            <p>{item.detailsUrl}</p>
+            {item.sprite && (
+                <img src={item.sprite} alt={item.name} />
+            )}
+            
+            <a href={item.detailsUrl} target="_blank">Details</a>
         </div>
     );
 }

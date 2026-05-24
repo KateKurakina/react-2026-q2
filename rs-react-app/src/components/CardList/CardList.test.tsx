@@ -1,21 +1,30 @@
 import { render, screen } from '@testing-library/react';
 import CardList from './CardList';
+import { BrowserRouter } from 'react-router-dom';
 
 describe('CardList', () => {
   it('renders correct number of cards', () => {
     render(
-      <CardList
-        items={[
-          {
-            name: 'pikachu',
-            description: 'electric',
-          },
-          {
-            name: 'bulbasaur',
-            description: 'grass',
-          },
-        ]}
-      />
+      <BrowserRouter>
+        <CardList
+          items={[
+            {
+              name: 'pikachu',
+              description: 'electric',
+              detailsUrl:"",
+              sprite:"",
+              stats:""
+            },
+            {
+              name: 'bulbasaur',
+              description: 'grass',
+              detailsUrl:"",
+              sprite:"",
+              stats:""
+            },
+          ]}
+        />
+      </BrowserRouter>
     );
 
     expect(screen.getByText('pikachu')).toBeInTheDocument();

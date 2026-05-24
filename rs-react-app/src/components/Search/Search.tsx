@@ -14,9 +14,11 @@ export default function Search({
     const [value, setValue] = useLocalStorage("search", "");
 
     useEffect(() => {
-        onSearch(value);
-    }, []);
-
+        if (currentSearch) {
+            setValue(currentSearch);
+        }
+    }, [currentSearch]);
+    
     const handleSearch = () => {
         const trimmed = value.trim();
 
@@ -25,6 +27,8 @@ export default function Search({
         setValue(trimmed);
         onSearch(trimmed);
     };
+
+    
 
     return (
         <div className='search'>

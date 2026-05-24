@@ -1,5 +1,4 @@
 import { useSelectedStore } from "../../store/selectedStore";
-import "./SelectedBar.css"
 
 export default function SelectedBar() {
     const selected = useSelectedStore(state => state.selected);

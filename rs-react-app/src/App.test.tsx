@@ -1,10 +1,18 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from './App';
+import { BrowserRouter } from 'react-router-dom';
+import { ThemeProvider } from './context/ThemeContext';
 
 describe('App', () => {
   it('renders app components', () => {
-    render(<App />);
+    render(
+      <ThemeProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </ThemeProvider>
+    );
 
     expect(
       screen.getByPlaceholderText('Search Pokemon...')
@@ -20,7 +28,13 @@ describe('App', () => {
   it('triggers error boundary', async () => {
     const user = userEvent.setup();
 
-    render(<App />);
+    render(
+      <ThemeProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </ThemeProvider>
+    );
 
     const button = screen.getByRole('button', {
       name: /test error/i,

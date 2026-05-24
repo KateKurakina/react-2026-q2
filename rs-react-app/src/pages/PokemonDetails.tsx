@@ -1,6 +1,5 @@
-import { useNavigate ,useParams } from "react-router-dom";
+import { useNavigate ,useParams, useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-
 
 type Pokemon = {
   name: string;
@@ -9,9 +8,11 @@ type Pokemon = {
 };
 
 export default function PokemonDetails() {
-const { detailsId } = useParams();
+  const { detailsId } = useParams();
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
-const navigate = useNavigate();
+  const query = searchParams.toString();
 
   const [pokemon, setPokemon] =
     useState<Pokemon | null>(null);
@@ -21,6 +22,9 @@ const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchPokemon() {
+      setLoading(true);
+      setPokemon(null);
+
       try {
         const res = await fetch(
           `https://pokeapi.co/api/v2/pokemon/${detailsId}`
@@ -36,7 +40,7 @@ const navigate = useNavigate();
     }
 
     fetchPokemon();
-  }, [name]);
+  }, [detailsId]);
 
   if (loading)
     return <p>Loading...</p>;
@@ -46,7 +50,7 @@ const navigate = useNavigate();
 
   return (
     <div className="details">
-      <button onClick={() => navigate("/")}>
+      <button onClick={() => navigate(`/?page=${query}`)}>
         Close
       </button>
 
@@ -61,9 +65,6 @@ const navigate = useNavigate();
         Weight:
         {pokemon.weight}
       </p>
-
-      
-
     </div>
   );
 }

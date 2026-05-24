@@ -64,41 +64,52 @@ export default function Results({ search }: Props) {
         setError(null);
 
         try {
-            const url = search
-                ? `https://pokeapi.co/api/v2/pokemon/${search.toLowerCase()}`
-                : `https://pokeapi.co/api/v2/pokemon?limit=10&offset=${offset}`;
+            const isSearch = !!search;
 
-            await new Promise((r) =>
-                setTimeout(r, 300)
-            );
+            let result: PokemonItem[] = [];
 
-            const res = await fetch(url);
+            if (isSearch) {
+                const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${search.toLowerCase()}`);
+                if (!res.ok) throw new Error();
+                const data: PokemonDetails = await res.json();
 
-            if (!res.ok) {
-                throw Error();
-            }
-
-            const apiData = await res.json();
-
-            const result: PokemonItem[] = await Promise.all(
-                apiData.results.map(async (item: ApiPokemon) => {
-                    const res = await fetch(item.url);
-                    const data: PokemonDetails = await res.json();
-                    const stats = data.stats.map(s => `${s.stat.name}:${s.base_stat}`).join(' | ');
-
-                    return {
+                result = [
+                    {
                         name: data.name,
                         description: `Height: ${data.height}, Weight: ${data.weight}`,
-                        detailsUrl: item.url,
+                        detailsUrl: `https://pokeapi.co/api/v2/pokemon/${data.name}`,
                         sprite: data.sprites.front_default,
-                        stats,
-                    };
-                })
-            );
+                        stats: data.stats
+                            .map(s => `${s.stat.name}:${s.base_stat}`)
+                            .join(' | ')
+                    }
+                ];
+            } else {
+                const res = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=10&offset=${offset}`);
+                if (!res.ok) throw new Error();
+
+                const apiData = await res.json();
+
+                result = await Promise.all(
+                    apiData.results.map(async (item: ApiPokemon) => {
+                        const res = await fetch(item.url);
+                        const data: PokemonDetails = await res.json();
+
+                        return {
+                            name: data.name,
+                            description: `Height: ${data.height}, Weight: ${data.weight}`,
+                            detailsUrl: item.url,
+                            sprite: data.sprites.front_default,
+                            stats: data.stats
+                                .map(s => `${s.stat.name}:${s.base_stat}`)
+                                .join(' | '),
+                        };
+                    })
+                );
+            }
 
             setData(result);
-        }
-        catch {
+        } catch {
             setError(
                 search
                 ? "Pokemon not found"

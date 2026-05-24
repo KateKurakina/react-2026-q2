@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Outlet } from "react-router-dom";
+import { useSearchParams, Outlet, useParams } from "react-router-dom";
 
 import Header from "../components/Header/Header";
 import Results from "../components/Results/Results";
@@ -7,12 +7,19 @@ import SelectedBar from "../components/SelectedBar/SelectedBar";
 
 
 export default function Home() {
-  const [search, setSearch] = useState('');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const { detailsId } = useParams();
+
+  const search = searchParams.get("search") || "";
   const [hasCrash, setHasCrash] = useState(false);
 
 
   const handleSearch = (value: string) => {
-    setSearch(value);
+    setSearchParams({
+      page: "1",
+      ...(value && { search: value }),
+      ...(detailsId && { details: detailsId }),
+    });
   };
 
   return (
@@ -26,10 +33,10 @@ export default function Home() {
       <div className="split-view">
 
         <div className="left-panel">
-            <Results search={search} />
+          <Results search={search} />
         </div>
         <div className="right-panel">
-                    <Outlet />
+          <Outlet context={{ detailsId }} />
         </div>
 
       </div>
