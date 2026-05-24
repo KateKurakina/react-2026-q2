@@ -1,21 +1,22 @@
 import { create } from "zustand";
+import type { PokemonItem } from "../types";
 
 type SelectedStore = {
-    selected: string[];
-    toggleSelected: (name: string) => void;
+    selected: PokemonItem[];
+    toggleSelected: (item: PokemonItem) => void;
     clearSelected: () => void;
 }
 
 export const useSelectedStore = create<SelectedStore>((set) => ({
     selected: [],
 
-    toggleSelected: (name) =>
+    toggleSelected: (item) =>
         set((state) => ({
-            selected: state.selected.includes(name)
+            selected: state.selected.some(p => p.name === item.name)
             ? state.selected.filter(
-                item => item !== name
+                p => p.name !== item.name
             )
-            : [...state.selected, name]
+            : [...state.selected, item]
         })),
 
     clearSelected: () =>

@@ -13,7 +13,7 @@ export default function Card({ item }: Props) {
 
     const toggleSelected = useSelectedStore(state => state.toggleSelected)
 
-    const checked = selected.includes(item.name);
+    const checked = selected.some(p => p.name === item.name);
     
     return (
         <div className="card" onClick={() => navigate(`/${item.name}`)}>
@@ -21,7 +21,7 @@ export default function Card({ item }: Props) {
             type="checkbox" 
             checked={checked} 
             onClick={(e) => e.stopPropagation()}
-            onChange={() => toggleSelected(item.name)}
+            onChange={() => toggleSelected(item)}
             />
             <h3>{item.name}</h3>
             <p>{item.description}</p>
