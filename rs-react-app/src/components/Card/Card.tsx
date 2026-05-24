@@ -1,4 +1,4 @@
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import type { PokemonItem } from "../../types";
 
 type Props = {
@@ -6,12 +6,10 @@ type Props = {
 };
 
 export default function Card({ item }: Props) {   
-    const [searchParams] = useSearchParams();
-    const page = searchParams.get("page") || 1;
     const navigate = useNavigate();
     
     return (
-        <div className="card" onClick={() => navigate(`/${item.name}?page=${page}`)}>
+        <div className="card" onClick={() => navigate(`/${item.name}`)}>
             <h3>{item.name}</h3>
             <p>{item.description}</p>
         </div>

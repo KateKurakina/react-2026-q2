@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate, Outlet, useParams } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 
 import Header from "../components/Header/Header";
 import Results from "../components/Results/Results";
@@ -8,16 +8,10 @@ import Results from "../components/Results/Results";
 export default function Home() {
   const [search, setSearch] = useState('');
   const [hasCrash, setHasCrash] = useState(false);
-  const { detailsId } = useParams();
-  const navigate = useNavigate();
 
 
   const handleSearch = (value: string) => {
     setSearch(value);
-  };
-
-  const handleCloseDetails = () => {
-    navigate("/");
   };
 
   return (
@@ -34,17 +28,7 @@ export default function Home() {
             <Results search={search} />
         </div>
         <div className="right-panel">
-            {detailsId ? (
-                <>
-                    <button onClick={handleCloseDetails}>
-                        Close
-                    </button>
-
                     <Outlet />
-                </>
-            ) : (
-                <p>Select pokemon</p>
-            )}
         </div>
 
       </div>
