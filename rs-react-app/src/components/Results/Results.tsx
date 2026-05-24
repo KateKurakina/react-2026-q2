@@ -5,12 +5,29 @@ import CardList from '../CardList/CardList';
 import type { PokemonItem } from "../../types";
 
 type Props = {
-    search: string;
+  search: string;
 }
 
 type ApiPokemon = {
   name: string;
   url: string;
+}
+
+type PokemonStat = {
+    stat: {
+        name: string;
+    };
+    base_stat: number;
+}
+
+type PokemonDetails = {
+    name: string;
+    height: number;
+    weight: number;
+    stats: PokemonStat[];
+    sprites: {
+        front_default: string;
+    };
 }
 
 
@@ -63,20 +80,21 @@ export default function Results({ search }: Props) {
 
             const apiData = await res.json();
 
-            const result: PokemonItem[] =
-                search
-                ? [{
-                    name: apiData.name,
-                    description:
-                        `Height: ${apiData.height},
-                        Weight: ${apiData.weight}`,
-                    }]
-                : apiData.results.map(
-                    (item: ApiPokemon) => ({
-                        name: item.name,
-                        description: item.url,
-                    })
-                    );
+            const result: PokemonItem[] = await Promise.all(
+                apiData.results.map(async (item: ApiPokemon) => {
+                    const res = await fetch(item.url);
+                    const data: PokemonDetails = await res.json();
+                    const stats = data.stats.map(s => `${s.stat.name}:${s.base_stat}`).join(' | ');
+
+                    return {
+                        name: data.name,
+                        description: `Height: ${data.height}, Weight: ${data.weight}`,
+                        detailsUrl: item.url,
+                        sprite: data.sprites.front_default,
+                        stats,
+                    };
+                })
+            );
 
             setData(result);
         }

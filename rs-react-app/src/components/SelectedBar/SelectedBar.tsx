@@ -8,9 +8,9 @@ export default function SelectedBar() {
     if (!selected.length) return null;
 
     const handleDownload = () => {
-        const headers = "name,detailsUrl\n";
+        const headers = "name,description,stats,detailsUrl\n";
 
-        const rows = selected.map(name => `${name}, https://pokeapi.co/api/v2/pokemon/${name}`);
+        const rows = selected.map(pokemon => `${pokemon.name}, "${pokemon.description}", "${pokemon.stats}", https://pokeapi.co/api/v2/pokemon/${pokemon.name}`);
 
         const csv = headers + rows.join("\n");
 

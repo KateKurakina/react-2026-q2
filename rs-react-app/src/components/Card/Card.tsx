@@ -24,7 +24,8 @@ export default function Card({ item }: Props) {
             onChange={() => toggleSelected(item)}
             />
             <h3>{item.name}</h3>
-            <p>{item.description}</p>
+            <img src={item.sprite} alt="" />
+            <p>{item.detailsUrl}</p>
         </div>
     );
 }
