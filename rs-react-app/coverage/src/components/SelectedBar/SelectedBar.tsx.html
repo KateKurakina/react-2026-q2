@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">26.08% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>6/23</span>
+                <span class='fraction'>23/23</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">25% </span>
+                <span class="strong">75% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>1/4</span>
+                <span class='fraction'>3/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">50% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>3/6</span>
+                <span class='fraction'>6/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">15.78% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>3/19</span>
+                <span class='fraction'>19/19</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -117,19 +117,19 @@
 <a name='L52'></a><a href='#L52'>52</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">26x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">26x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -137,24 +137,24 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -172,15 +172,15 @@ export default function SelectedBar() {
 &nbsp;
     const clearSelected = useSelectedStore(state =&gt; state.clearSelected);
 &nbsp;
-    <span class="missing-if-branch" title="else path not taken" >E</span>if (!selected.length) return null;
+    if (!selected.length) return null;
 &nbsp;
-    const handleDownload = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
-        const headers = <span class="cstat-no" title="statement not covered" >"name,description,stats,detailsUrl\n";</span>
+    const handleDownload = () =&gt; {
+        const headers = "name,description,stats,detailsUrl\n";
 &nbsp;
-        const escape = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(v</span>alue: string) =&gt; <span class="cstat-no" title="statement not covered" >`"${value ?? ""}"`;</span></span>
+        const escape = (value: string) =&gt; `"${value ?? <span class="branch-1 cbranch-no" title="branch not covered" >""}</span>"`;
 &nbsp;
-        const rows = <span class="cstat-no" title="statement not covered" >selected.map(<span class="fstat-no" title="function not covered" >pokemon =&gt; </span></span>
-<span class="cstat-no" title="statement not covered" >            [</span>
+        const rows = selected.map(pokemon =&gt; 
+            [
                 escape(pokemon.name),
                 escape(pokemon.description),
                 escape(pokemon.stats),
@@ -188,24 +188,24 @@ export default function SelectedBar() {
             ].join(",")
         );
 &nbsp;
-        const csv = <span class="cstat-no" title="statement not covered" >headers + rows.join("\n");</span>
+        const csv = headers + rows.join("\n");
 &nbsp;
-        const blob = <span class="cstat-no" title="statement not covered" >new Blob([csv], {type: "text/csv;charset=utf-8;"}); //creating a Blob from a string with the type text/csv</span>
+        const blob = new Blob([csv], {type: "text/csv;charset=utf-8;"}); //creating a Blob from a string with the type text/csv
 &nbsp;
-        const url = <span class="cstat-no" title="statement not covered" >URL.createObjectURL(blob); //creating a link to the Blob object</span>
+        const url = URL.createObjectURL(blob); //creating a link to the Blob object
 &nbsp;
-        const link = <span class="cstat-no" title="statement not covered" >document.createElement("a");</span>
-<span class="cstat-no" title="statement not covered" >        link.href = url;</span>
-<span class="cstat-no" title="statement not covered" >        link.download = `${selected.length}_items.csv`;</span>
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `${selected.length}_items.csv`;
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        document.body.appendChild(link);</span>
-<span class="cstat-no" title="statement not covered" >        link.click();</span>
-<span class="cstat-no" title="statement not covered" >        document.body.removeChild(link);</span>
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        URL.revokeObjectURL(url); //release the memory</span>
+        URL.revokeObjectURL(url); //release the memory
     };
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    return (</span>
+    return (
         &lt;div className="selected-bar"&gt;
             &lt;p&gt;Selected items: &lt;strong&gt;{selected.length}&lt;/strong&gt; &lt;/p&gt;
 &nbsp;
@@ -223,7 +223,7 @@ export default function SelectedBar() {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-05-24T19:50:41.000Z
+                at 2026-05-24T21:12:26.981Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

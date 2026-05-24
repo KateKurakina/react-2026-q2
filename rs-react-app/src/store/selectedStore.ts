@@ -10,14 +10,18 @@ type SelectedStore = {
 export const useSelectedStore = create<SelectedStore>((set) => ({
     selected: [],
 
-    toggleSelected: (item) =>
-        set((state) => ({
-            selected: state.selected.some(p => p.name === item.name)
-            ? state.selected.filter(
-                p => p.name !== item.name
-            )
-            : [...state.selected, item]
-        })),
+    toggleSelected: (pokemon) =>
+        set((state) => {
+            const exists = state.selected.some(p => p.name === pokemon.name);
+
+            return {
+                selected: exists 
+                ? state.selected.filter(
+                p => p.name !== pokemon.name)
+            : [...state.selected, pokemon],
+            };
+            
+        }),
 
     clearSelected: () =>
         set({

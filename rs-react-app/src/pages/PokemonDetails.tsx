@@ -33,12 +33,12 @@ export default function PokemonDetails() {
         const data = await res.json();
 
         setPokemon(data);
-      }
-      finally {
+      } catch {
+        setPokemon(null);
+      } finally {
         setLoading(false);
       }
     }
-
     fetchPokemon();
   }, [detailsId]);
 
