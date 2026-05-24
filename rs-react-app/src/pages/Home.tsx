@@ -3,6 +3,7 @@ import { Outlet } from "react-router-dom";
 
 import Header from "../components/Header/Header";
 import Results from "../components/Results/Results";
+import SelectedBar from "../components/SelectedBar/SelectedBar";
 
 
 export default function Home() {
@@ -41,6 +42,8 @@ export default function Home() {
       </button>
 
       {hasCrash && (() => { throw new Error("Test error"); })()}
+
+      <SelectedBar />
 
     </div>
   );

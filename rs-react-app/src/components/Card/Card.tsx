@@ -9,7 +9,9 @@ type Props = {
 export default function Card({ item }: Props) {   
     const navigate = useNavigate();
 
-    const { selected, toggleSelected } = useSelectedStore();
+    const selected = useSelectedStore(state => state.selected);
+
+    const toggleSelected = useSelectedStore(state => state.toggleSelected)
 
     const checked = selected.includes(item.name);
     
