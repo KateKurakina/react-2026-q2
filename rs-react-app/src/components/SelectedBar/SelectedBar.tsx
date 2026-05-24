@@ -7,13 +7,35 @@ export default function SelectedBar() {
 
     if (!selected.length) return null;
 
+    const handleDownload = () => {
+        const headers = "name,detailsUrl\n";
+
+        const rows = selected.map(name => `${name}, https://pokeapi.co/api/v2/pokemon/${name}`);
+
+        const csv = headers + rows.join("\n");
+
+        const blob = new Blob([csv], {type: "text/csv;charset=utf-8;"}); //creating a Blob from a string with the type text/csv
+
+        const url = URL.createObjectURL(blob); //creating a link to the Blob object
+
+        const link = document.createElement("a");
+
+        link.href = url;
+
+        link.download = `${selected.length}_items.csv`;
+
+        link.click();
+
+        URL.revokeObjectURL(url); //release the memory
+    };
+
     return (
         <div className="selected-bar">
             <p>Selected: <strong>{selected.length}</strong> </p>
 
             <div className="selected-actions">
                 <button onClick={clearSelected}>Clear All</button>
-                <button>Download</button>
+                <button onClick={handleDownload}>Download</button>
             </div>
         </div>
     );
