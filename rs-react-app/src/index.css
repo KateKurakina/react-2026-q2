@@ -1,0 +1,122 @@
+body {
+  margin: 0;
+  font-family: "Montserrat", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 14px;
+}
+
+.app {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.light {
+  background: white;
+  color: black;
+  min-height: 100vh;
+}
+
+.dark {
+  background: #1d1d1d;
+  color: white;
+  min-height: 100vh;
+}
+
+.header {
+  padding: 20px;
+  border-bottom: 2px solid #ccc;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.search {
+  display: flex;
+  gap: 10px;
+}
+
+.results {
+  position: relative;
+  min-height: 300px;
+  padding: 20px;
+}
+
+.loader {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.card {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+h3 {
+  font-size: 16px;
+}
+
+.pagination {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+button {
+  border: none;
+  border-radius: 10px;
+  padding: 5px;
+  text-align: center;
+  width: 80px;
+  font-size: 12px;
+}
+
+.button__error {
+  align-self: center;
+}
+
+.split-view {
+  display: flex;
+  gap: 20px;
+}
+
+.left-panel {
+  flex: 2;
+}
+
+.right-panel {
+  flex: 1;
+  border-left: 1px solid #ddd;
+  padding-left: 20px;
+}
+
+.selected-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 12px 20px;
+    border-top: 1px solid #ddd;
+    background: #ccc;
+
+    box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
+    z-index: 1000;
+}
+
+.selected-actions{
+    display: flex;
+    gap: 10px;
+}
