@@ -142,7 +142,7 @@ describe('Results', () => {
       })
     })
 
-    global.fetch = fetchMock as any;
+    global.fetch = fetchMock as unknown as typeof fetch;
 
     renderWithProviders(
         <Results search="" />
@@ -180,7 +180,7 @@ describe('Results', () => {
       })
     })
 
-    global.fetch = fetchMock as any;
+    global.fetch = fetchMock as unknown as typeof fetch;
 
     renderWithProviders(
         <Results search="" />
@@ -218,7 +218,7 @@ describe('Results', () => {
       })
     })
 
-    global.fetch = fetchMock as any;
+    global.fetch = fetchMock as unknown as typeof fetch;
 
     renderWithProviders(
         <Results search="" />
