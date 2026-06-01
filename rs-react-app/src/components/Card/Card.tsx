@@ -16,11 +16,9 @@ export default function Card({ item }: Props) {
     const checked = selected.some(p => p.name === item.name);
 
     const [searchParams] = useSearchParams();
-
-    const query = searchParams.toString();
     
     return (
-        <div className="card" onClick={() => navigate(`/${item.name}?page=${query}`)}>
+        <div className="card" onClick={() => navigate(`/${item.name}?${searchParams.toString()}`)}>
             <input 
             type="checkbox" 
             checked={checked} 

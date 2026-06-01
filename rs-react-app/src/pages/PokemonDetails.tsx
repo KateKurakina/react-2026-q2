@@ -12,8 +12,6 @@ export default function PokemonDetails() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
-  const query = searchParams.toString();
-
   const [pokemon, setPokemon] =
     useState<Pokemon | null>(null);
 
@@ -50,7 +48,7 @@ export default function PokemonDetails() {
 
   return (
     <div className="details">
-      <button onClick={() => navigate(`/?page=${query}`)}>
+      <button onClick={() => navigate(`/?${searchParams.toString()}`)}>
         Close
       </button>
 
