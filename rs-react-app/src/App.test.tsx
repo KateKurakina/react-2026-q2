@@ -1,17 +1,12 @@
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from './App';
-import { BrowserRouter } from 'react-router-dom';
-import { ThemeProvider } from './context/ThemeContext';
+import { renderWithProviders } from './test-utils';
 
 describe('App', () => {
   it('renders app components', () => {
-    render(
-      <ThemeProvider>
-        <BrowserRouter>
+    renderWithProviders(
           <App />
-        </BrowserRouter>
-      </ThemeProvider>
     );
 
     expect(
@@ -28,12 +23,8 @@ describe('App', () => {
   it('triggers error boundary', async () => {
     const user = userEvent.setup();
 
-    render(
-      <ThemeProvider>
-        <BrowserRouter>
+    renderWithProviders(
           <App />
-        </BrowserRouter>
-      </ThemeProvider>
     );
 
     const button = screen.getByRole('button', {

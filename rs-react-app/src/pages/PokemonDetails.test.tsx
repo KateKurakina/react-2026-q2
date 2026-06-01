@@ -1,6 +1,6 @@
-import { render, screen } from '@testing-library/react';
-import { MemoryRouter, Routes, Route } from 'react-router-dom';
+import { screen } from '@testing-library/react';
 import PokemonDetails from './PokemonDetails';
+import { renderWithProviders } from '../test-utils'; 
 
 describe('PokemonDetails', () => {
   it('shows loading', () => {
@@ -15,13 +15,9 @@ describe('PokemonDetails', () => {
         } as Response)
     );
 
-    render(
-      <MemoryRouter initialEntries={['/pikachu']}>
-        <Routes>
-          <Route path='/:detailsId' element={<PokemonDetails />} />
-        </Routes>
-      </MemoryRouter>
-    );
+    renderWithProviders(<PokemonDetails />, {
+      route: "/pikachu",
+    });
 
     expect(screen.getByText(/loading/i))
       .toBeInTheDocument();
@@ -29,6 +25,7 @@ describe('PokemonDetails', () => {
 
   it('renders pokemon data', async () => {
     global.fetch = vi.fn().mockResolvedValue({
+      ok: true,
       json: async () => ({
         name: 'pikachu',
         height: 4,
@@ -36,13 +33,9 @@ describe('PokemonDetails', () => {
       })
     });
 
-    render(
-      <MemoryRouter initialEntries={['/pikachu']}>
-        <Routes>
-          <Route path='/:detailsId' element={<PokemonDetails />} />
-        </Routes>
-      </MemoryRouter>
-    );
+    renderWithProviders(<PokemonDetails />, {
+      route: "/pikachu",
+    });
 
     expect(
       await screen.findByText('pikachu')
@@ -54,13 +47,9 @@ describe('PokemonDetails', () => {
       new Error()
     );
 
-    render(
-      <MemoryRouter initialEntries={['/pikachu']}>
-        <Routes>
-          <Route path='/:detailsId' element={<PokemonDetails />} />
-        </Routes>
-      </MemoryRouter>
-    );
+    renderWithProviders(<PokemonDetails />, {
+      route: "/pikachu",
+    });
 
     expect(
       await screen.findByText(/not found/i)

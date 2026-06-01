@@ -1,8 +1,8 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import type { Mock } from 'vitest';
 import Results from './Results';
-import { BrowserRouter } from 'react-router-dom';
+import { renderWithProviders } from '../../test-utils'; 
 
 describe('Results', () => {
   beforeEach(() => {
@@ -14,10 +14,8 @@ describe('Results', () => {
       new Promise(() => {})
     ) as Mock;
 
-    render(
-      <BrowserRouter>
+    renderWithProviders(
         <Results search="" />
-      </BrowserRouter>
     );
 
     expect(screen.getByText('Loading...')).toBeInTheDocument();
@@ -57,10 +55,8 @@ describe('Results', () => {
       
     }) as Mock;
 
-    render(
-      <BrowserRouter>
+    renderWithProviders(
         <Results search="" />
-      </BrowserRouter>
     );
 
     expect(await screen.findByText('pikachu')).toBeInTheDocument();
@@ -73,10 +69,8 @@ describe('Results', () => {
       })
     ) as Mock;
 
-    render(
-      <BrowserRouter>
+    renderWithProviders(
         <Results search="" />
-      </BrowserRouter>
     );
 
     expect(
@@ -118,10 +112,8 @@ describe('Results', () => {
       
     }) as Mock;
 
-    render(
-      <BrowserRouter>
+    renderWithProviders(
         <Results search="" />
-      </BrowserRouter>
     );
 
     expect(await screen.findByText('pikachu')).toBeInTheDocument();
@@ -152,10 +144,8 @@ describe('Results', () => {
 
     global.fetch = fetchMock as any;
 
-    render(
-      <BrowserRouter>
+    renderWithProviders(
         <Results search="" />
-      </BrowserRouter>
     );
 
     const nextButton = await screen.findByRole('button', {
@@ -192,10 +182,8 @@ describe('Results', () => {
 
     global.fetch = fetchMock as any;
 
-    render(
-      <BrowserRouter>
+    renderWithProviders(
         <Results search="" />
-      </BrowserRouter>
     );
 
     const next = await screen.findByRole('button', {
@@ -232,10 +220,8 @@ describe('Results', () => {
 
     global.fetch = fetchMock as any;
 
-    render(
-      <BrowserRouter>
+    renderWithProviders(
         <Results search="" />
-      </BrowserRouter>
     );
 
     const next = await screen.findByRole('button', {
