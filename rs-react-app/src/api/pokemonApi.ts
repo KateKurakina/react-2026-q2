@@ -22,6 +22,12 @@ type PokemonDetails = {
     };
 }
 
+export type PokemonDetailsResponse = {
+    name: string;
+    height: number;
+    weight: number;
+}
+
 export async function getPokemonList(page: number): Promise<PokemonItem[]> {
     const offset = (page - 1) * 10;
 
@@ -67,5 +73,15 @@ export async function searchPokemon(search: string): Promise<PokemonItem[]> {
                 .join(' | ')
         }
     ];
+}
+
+export async function getPokemonDetails(name: string): Promise<PokemonDetailsResponse> {
+    const res = await fetch(
+          `https://pokeapi.co/api/v2/pokemon/${name}`
+    );
+
+    if (!res.ok) throw new Error("Failed not found");
+
+    return res.json();
 }
 

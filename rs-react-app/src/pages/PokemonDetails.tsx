@@ -1,50 +1,27 @@
 import { useNavigate ,useParams, useSearchParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-
-type Pokemon = {
-  name: string;
-  height: number;
-  weight: number;
-};
+import { usePokemonDetails } from "../hooks/usePokemonQueries";
 
 export default function PokemonDetails() {
   const { detailsId } = useParams();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
-  const [pokemon, setPokemon] =
-    useState<Pokemon | null>(null);
+  const {
+    data: pokemon,
+    isLoading,
+    error,
+  } = usePokemonDetails(detailsId ?? "");
 
-  const [loading, setLoading] =
-    useState(true);
-
-  useEffect(() => {
-    async function fetchPokemon() {
-      setLoading(true);
-      setPokemon(null);
-
-      try {
-        const res = await fetch(
-          `https://pokeapi.co/api/v2/pokemon/${detailsId}`
-        );
-
-        const data = await res.json();
-
-        setPokemon(data);
-      } catch {
-        setPokemon(null);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchPokemon();
-  }, [detailsId]);
-
-  if (loading)
+  if (isLoading)
     return <p>Loading...</p>;
 
-  if (!pokemon)
-    return <p>Not found</p>;
+  if (error) {
+    return <p>Pokemon not found</p>
+  }
+
+  if (!pokemon) {
+    return null;
+  }
 
   return (
     <div className="details">
