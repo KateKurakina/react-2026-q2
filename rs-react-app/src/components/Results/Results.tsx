@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
 
 import CardList from '../CardList/CardList';
 
@@ -13,6 +14,8 @@ export default function Results({ search }: Props) {
     const [searchParams, setSearchParams] = useSearchParams();
 
     const page = Number(searchParams.get("page")) || 1;
+
+    const queryClient = useQueryClient();
 
     useEffect(() => {
         if (!searchParams.get("page")) {
@@ -52,6 +55,16 @@ export default function Results({ search }: Props) {
                 onClick={() => setSearchParams({page: String(page + 1)})}
                 >
                 Next
+                </button>
+                <button
+                onClick={() => {
+                    queryClient.invalidateQueries({
+                        queryKey: search
+                        ? ["search", search]
+                        : ["pokemon", page],
+                    });
+                }}>
+                Refresh
                 </button>
             </div>
         )}
