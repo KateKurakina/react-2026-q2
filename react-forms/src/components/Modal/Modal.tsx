@@ -10,9 +10,11 @@ type ModalProps = {
     children: ReactNode;
 }
 
-const modalRoot = document.getElementById('modal-root');
-
 export default function Modal({ isOpen, onClose, children}: ModalProps) {
+    const modalRoot = document.getElementById('modal-root');
+
+    if (!modalRoot) return null;
+
     const modalRef = useRef<HTMLDivElement>(null);
 
     const previousFocusRef = useRef<HTMLElement | null>(null);
