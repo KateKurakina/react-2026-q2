@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import Modal from './components/Modal/Modal'
+import UncontrolledForm from './components/UncontrolledForm/UncontrolledForm';
 import './App.css'
 
 function App() {
@@ -29,8 +30,7 @@ function App() {
       isOpen={isUncontrolledOpen}
       onClose={() => setIsUncontrolledOpen(false)}
       >
-        <h2>Uncontrolled Form</h2>
-
+        <UncontrolledForm/>
       </Modal>
 
       <Modal
