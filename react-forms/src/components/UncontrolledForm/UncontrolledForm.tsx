@@ -2,20 +2,20 @@ import type { FormEvent } from "react";
 import { formSchema } from "../../schemas/formSchema";
 import type { FormData } from "../../schemas/formSchema";
 import { useState } from "react";
+import { useFormStore } from "../../store/useFormStore";
+
 
 export default function UncontrolledForm() {
     const [errors, setErrors] = useState<Record<string, string>>({});
+
+    const addSubmission = useFormStore((state) => state.addSubmission);
 
     const handleSubmit = (
         event: FormEvent<HTMLFormElement>
     ) => {
         event.preventDefault();
 
-        console.log('1. submit fired');
-
-        const formData = new FormData(event.currentTarget);
-
-        console.log('2. image:', formData.get('image'));
+        const formData = new FormData(event.currentTarget);        
 
         const imageValue = formData.get('image');
 
@@ -84,7 +84,14 @@ export default function UncontrolledForm() {
 
             setErrors({})
 
-            console.log(result.data);
+            const {
+                confirmPassword,
+                ...submissionData
+            } = result.data;
+
+            addSubmission(submissionData);
+
+            event.currentTarget.reset();
 
         }
         reader.readAsDataURL(file);
@@ -144,6 +151,42 @@ export default function UncontrolledForm() {
             </select>
             {errors.gender && (
                 <p role="alert" className="error">{errors.gender}</p>
+            )}
+
+            <label htmlFor="country">
+                Country
+            </label>
+            <input 
+            id="country" 
+            name="country" 
+            type="text" 
+            />
+            {errors.country && (
+                <p role="alert">{errors.country}</p>
+            )}
+
+            <label htmlFor="password">
+                Password
+            </label>
+            <input
+            id="password"
+            name="password"
+            type="password"
+            />
+            {errors.password && (
+                <p role="alert">{errors.password}</p>
+            )}
+
+            <label htmlFor="confirmPassword">
+                Confirm Password
+            </label>
+            <input
+            id="confirmPassword"
+            name="confirmPassword"
+            type="password"
+            />
+            {errors.confirmPassword && (
+                <p role="alert">{errors.confirmPassword}</p>
             )}
 
             <label htmlFor="image">
