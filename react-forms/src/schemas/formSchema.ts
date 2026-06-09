@@ -28,7 +28,10 @@ export const formSchema = z.object({
         }
     ),
 
-    age: z.coerce.number().min(0),
+    age: z.coerce
+    .number()
+    .int('Age must be intenger')
+    .min(0, 'Age must be non-negative'),
 
     email: z.string().refine(
         isValidEmail,
@@ -49,9 +52,21 @@ export const formSchema = z.object({
 
     confirmPassword: z.string(),
 
-    image: z.string(),
+    image: z
+    .string()
+    .refine(
+        (value) => value.startsWith('data:image/'),
+        {
+            message: 'Invalid image format'
+        }
+    ),
 
-    acceptedTerms: z.literal(true),
+    acceptedTerms: z.boolean().refine(
+        (val) => val === true,
+        {
+            message: 'You must accept terms',
+        }
+    ),
 }).refine(
     (data) => data.password === data.confirmPassword,
     {
