@@ -2,6 +2,7 @@ import { useState } from 'react'
 import Modal from './components/Modal/Modal'
 import UncontrolledForm from './components/UncontrolledForm/UncontrolledForm';
 import SubmissionsList from './components/SubmissionList.tsx/SubmissionList';
+import RHFForm from './components/RHFForm/RHFForm';
 import './App.css'
 
 function App() {
@@ -38,8 +39,7 @@ function App() {
       isOpen={isRhfOpen}
       onClose={() => setIsRhfOpen(false)}
       >
-        <h2>React Hook Form</h2>
-
+        <RHFForm onSuccess={() => setIsRhfOpen(false)}/>
       </Modal>
 
       <SubmissionsList/>

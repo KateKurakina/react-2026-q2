@@ -25,7 +25,7 @@ export const useFormStore = create<FormStore>((set) => ({
         'Russia'
     ],
 
-    addSubmission: (data) =>
+    addSubmission: (data: CreateSubmission) =>
         set((state) => ({
             submissions: [
                 {

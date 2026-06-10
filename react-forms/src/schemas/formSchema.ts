@@ -28,7 +28,7 @@ export const formSchema = (countries: string[]) => z.object({
         }
     ),
 
-    age: z.coerce
+    age: z
     .number()
     .int('Age must be intenger')
     .min(0, 'Age must be non-negative'),
@@ -86,4 +86,6 @@ export const formSchema = (countries: string[]) => z.object({
     }
 );
 
-export type FormData = z.infer<typeof formSchema>;
+type Schema = ReturnType<typeof formSchema>;
+
+export type FormData = z.infer<Schema>;

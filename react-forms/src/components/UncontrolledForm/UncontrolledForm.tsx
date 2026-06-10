@@ -5,7 +5,7 @@ import { formSchema } from "../../schemas/formSchema";
 import type { FormData } from "../../schemas/formSchema";
 import { useFormStore } from "../../store/useFormStore";
 
-import { getPasswordStrength } from "../../utlils/passwordStrength";
+import { getPasswordStrength } from "../../utils/passwordStrength";
 
 
 export default function UncontrolledForm() {
