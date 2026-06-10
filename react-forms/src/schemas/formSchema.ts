@@ -20,8 +20,8 @@ const isValidEmail = (
     return domainParts.length >= 2;
 };
 
-export const formSchema = z.object({
-    name: z.string().min(1).refine(
+export const formSchema = (countries: string[]) => z.object({
+    name: z.string().min(1, 'Name is required').refine(
         (value) => value[0] === value[0].toUpperCase(),
         {
             message: 'First letter must be uppercase',
@@ -46,11 +46,22 @@ export const formSchema = z.object({
         'other',
     ]),
 
-    country: z.string(),
+    country: z.string().refine(
+        (value) => countries.includes(value),
+        {
+            message: 'Country is not valid',
+        }
+    ),
 
-    password: z.string(),
+    password: z.string().min(
+        1,
+        'Password is required'
+    ),
 
-    confirmPassword: z.string(),
+    confirmPassword: z.string().min(
+        1,
+        'Confirm password is required'
+    ),
 
     image: z
     .string()

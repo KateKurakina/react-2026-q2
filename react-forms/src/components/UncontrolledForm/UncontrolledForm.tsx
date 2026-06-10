@@ -1,14 +1,25 @@
 import type { FormEvent } from "react";
+import { useState } from "react";
+
 import { formSchema } from "../../schemas/formSchema";
 import type { FormData } from "../../schemas/formSchema";
-import { useState } from "react";
 import { useFormStore } from "../../store/useFormStore";
+
+import { getPasswordStrength } from "../../utlils/passwordStrength";
 
 
 export default function UncontrolledForm() {
     const [errors, setErrors] = useState<Record<string, string>>({});
 
     const addSubmission = useFormStore((state) => state.addSubmission);
+
+    const countries = useFormStore((state) => state.countries);
+
+    const [password, setPassword] = useState('');
+
+    const strength = getPasswordStrength(password);
+
+    const schema = formSchema(countries);
 
     const handleSubmit = (
         event: FormEvent<HTMLFormElement>
@@ -65,7 +76,8 @@ export default function UncontrolledForm() {
                 image: reader.result as string,
                 acceptedTerms: formData.get('terms') === 'on',
             }
-            const result = formSchema.safeParse(data);
+
+            const result = schema.safeParse(data);
 
             if (!result.success) {
                 const errors: Record<string, string> = {};
@@ -92,7 +104,8 @@ export default function UncontrolledForm() {
             addSubmission(submissionData);
 
             event.currentTarget.reset();
-
+            
+            setPassword('');
         }
         reader.readAsDataURL(file);
     };
@@ -159,8 +172,13 @@ export default function UncontrolledForm() {
             <input 
             id="country" 
             name="country" 
-            type="text" 
+            list="countries" 
             />
+            <datalist id="countries">
+                {countries.map((country) => (
+                    <option key={country} value={country}/>
+                ))}
+            </datalist>
             {errors.country && (
                 <p role="alert">{errors.country}</p>
             )}
@@ -172,7 +190,26 @@ export default function UncontrolledForm() {
             id="password"
             name="password"
             type="password"
+            onChange={(e) => setPassword(e.target.value)}
             />
+            <ul>
+                <li>
+                    {strength.hasNumber ? 'yes' : 'no'}{' '}
+                    Number
+                </li>
+                <li>
+                    {strength.hasUppercase ? 'yes' : 'no'}{' '}
+                    Uppercase
+                </li>
+                <li>
+                    {strength.hasLowercase ? 'yes' : 'no'}{' '}
+                    Lowercase
+                </li>
+                <li>
+                    {strength.hasSpecial ? 'yes' : 'no'}{' '}
+                    Special character
+                </li>
+            </ul>
             {errors.password && (
                 <p role="alert">{errors.password}</p>
             )}
