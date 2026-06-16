@@ -4,6 +4,8 @@ import { getPopulationForYear, createYearDataMap } from '../../utils/data-transf
 
 import styles from './country-list.module.css';
 
+import { useMemo } from 'react';
+
 type CountryListProps = {
   countries: Country[];
   searchQuery: string;
@@ -24,27 +26,41 @@ export const CountryList = ({
   sortField,
   sortOrder,
 }: CountryListProps) => {
-  const filteredCountries = countries
-    .filter((c) => {
-      const matchesSearch = c.id.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchesRegion = !selectedRegion || c.data.some((d) => d.region === selectedRegion);
-      return matchesSearch && matchesRegion;
-    })
-    .sort((a, b) => {
-      if (sortField === 'name') {
-        return sortOrder === 'asc' ? a.id.localeCompare(b.id) : b.id.localeCompare(a.id);
-      } else {
-        const popA = getPopulationForYear(createYearDataMap(a.data), selectedYear) || 0;
-        const popB = getPopulationForYear(createYearDataMap(b.data), selectedYear) || 0;
-        return sortOrder === 'asc' ? popA - popB : popB - popA;
-      }
-    });
+  const filteredCountries = useMemo(() => {
+    const preparedCountries = countries
+      .filter((country) => {
+        const matchesSearch = country.id.toLowerCase().includes(searchQuery.toLowerCase());
+        const matchesRegion = !selectedRegion || country.data.some((d) => d.region === selectedRegion);
+        return matchesSearch && matchesRegion;
+      })
+      .map((country) => ({
+        country,
+        population: getPopulationForYear(createYearDataMap(country.data), selectedYear) ?? 0,
+      }));
+
+      preparedCountries.sort((a, b) => {
+        if (sortField === 'name') {
+          return sortOrder === 'asc' ? a.country.id.localeCompare(b.country.id) : b.country.id.localeCompare(a.country.id);
+        } 
+          return sortOrder === 'asc' ? a.population - b.population : b.population - a.population;
+      });
+
+      return preparedCountries.map((item) => item.country);
+  }, [
+    countries,
+    searchQuery,
+    selectedRegion,
+    selectedYear,
+    sortField,
+    sortOrder,
+  ]);
+    
 
   return (
     <div className={styles.countryList}>
-      {filteredCountries.map((country, index) => (
+      {filteredCountries.map((country) => (
         <CountryCard
-          key={index}
+          key={country.id}
           country={country}
           selectedYear={selectedYear}
           selectedColumns={selectedColumns}
