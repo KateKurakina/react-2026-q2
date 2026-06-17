@@ -6,7 +6,7 @@
 
 - **Commit duration**: 8 s
 - **Render duration**: 500.2 ms
-- **Screenshot**: ![screenshot](image.png) 
+- **Screenshot**: ![screenshot](screenshots/baseline/sorting.png)
 
 ### Interaction B: Search countries
 
